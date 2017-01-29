@@ -8,7 +8,7 @@ const navbarInstance = (
     <Navbar inverse collapseOnSelect>
         <Navbar.Header>
             <Navbar.Brand>
-                <a href="#">Rememberence</a>
+                <a href="#">Remembrance</a>
             </Navbar.Brand>
             <Navbar.Toggle />
         </Navbar.Header>
