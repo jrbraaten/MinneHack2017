@@ -16,11 +16,6 @@ const navbarInstance = (
 );
 
 document.addEventListener('DOMContentLoaded', function() {
-    ReactDOM.render(
-        React.createElement(Counter),
-        document.getElementById('mount')
-    );
-
     ReactDOM.render(navbarInstance, document.getElementById('nav-holder'));
     ReactDOM.render(React.createElement(Calendar), document.getElementById('calendarLocations'))
 });
