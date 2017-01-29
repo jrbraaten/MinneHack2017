@@ -26,9 +26,12 @@
     "body-parser": "^1.16.0",
     "express": "^4.13.4",
     "express-stormpath": "^3.2.0",
+    "node-persist": "^2.0.8",
     "react": "^15.1.0",
     "react-bootstrap": "^0.30.7",
     "react-dom": "^15.1.0",
+    "react-engine": "^4.2.1",
+    "react-router": "^3.0.2",
     "webpack": "^1.13.1",
     "webpack-dev-middleware": "^1.6.1"
   }

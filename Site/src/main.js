@@ -18,7 +18,7 @@ const navbarInstance = (
 document.addEventListener('DOMContentLoaded', function() {
     ReactDOM.render(
         React.createElement(Counter),
-        document.getElementById('mount'),
+        document.getElementById('mount')
     );
 
     ReactDOM.render(navbarInstance, document.getElementById('nav-holder'));
