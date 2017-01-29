@@ -5,9 +5,18 @@ import java.awt.Image;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.TrayIcon.MessageType;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +39,7 @@ import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
 
 public class Controller {
+	
     /** Application name. */
     private static final String APPLICATION_NAME =
         "Google Calendar API Java Quickstart";
@@ -110,46 +120,97 @@ public class Controller {
         // Build a new authorized API client service.
         // Note: Do not confuse this class with the
         //   com.google.api.services.calendar.model.Calendar class.
-    	List<DateTime> alreadyDisplayed = new ArrayList<DateTime>();
-        while(true){
-	    	com.google.api.services.calendar.Calendar service =
-	            getCalendarService();
-	
-	        // List the next 10 events from the primary calendar.
-	        DateTime now = new DateTime(System.currentTimeMillis());
-	        Events events = service.events().list("primary")
-	            .setMaxResults(10)
-	            .setTimeMin(now)
-	            .setOrderBy("startTime")
-	            .setSingleEvents(true)
-	            .execute();
-	        List<Event> items = events.getItems();
-	        if (items.size() == 0) {
-	            System.out.println("No upcoming events found.");
-	        } else {
-	            System.out.println("Upcoming events");
-	            for (Event event : items) {
-	                DateTime start = event.getStart().getDateTime();
-	                if (start == null) {
-	                    start = event.getStart().getDate();
-	                }
-	                if(!alreadyDisplayed.contains(start)){
-	                	displayTray();
-	                	
-	                }
-	                System.out.printf("%s (%s)\n", event.getSummary(), start);
-	            }
-	        }
-	        try {
-				Thread.sleep(60000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+    	List<TrayIcon> icons = new ArrayList<TrayIcon>();
+    	
+    	Thread server = new Thread(new Runnable(){
+    		
+        	
+			@Override
+			public void run() {
+				SystemTray tray = SystemTray.getSystemTray();
+				try{
+					ServerSocket socket = new ServerSocket();
+		        	socket.bind(new InetSocketAddress(8080));
+					while(true){
+						System.out.println("Waiting");
+			        	Socket s = socket.accept();
+			        	s.getInputStream();
+			        	System.out.println("Running");
+			        	if(s.getInputStream() != null){
+			        		System.out.println("Closing");
+			        		tray.remove(icons.get(0));
+			        		s.close();
+			        	}
+					}
+				} catch (Exception e){
+					
+				}				
 			}
-        }
+    		
+    	});
+    	
+    	
+    	
+    	
+    	Thread notes = new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				try{
+				List<DateTime> alreadyDisplayed = new ArrayList<DateTime>();
+				
+				while(true){
+					com.google.api.services.calendar.Calendar service =
+				
+			            getCalendarService();
+			
+			        // List the next 10 events from the primary calendar.
+			        DateTime now = new DateTime(System.currentTimeMillis());
+			        Events events = service.events().list("primary")
+			            .setMaxResults(10)
+			            .setTimeMin(now)
+			            .setOrderBy("startTime")
+			            .setSingleEvents(true)
+			            .execute();
+			        List<Event> items = events.getItems();
+			        if (items.size() == 0) {
+			            System.out.println("No upcoming events found.");
+			        } else {
+			            System.out.println("Upcoming events");
+			            for (Event event : items) {
+			                DateTime start = event.getStart().getDateTime();
+			                if (start == null) {
+			                    start = event.getStart().getDate();
+			                }
+			                if(!alreadyDisplayed.contains(start)){			            
+			                	TrayIcon trayIcon = displayTray(event.getDescription(), event.getSummary());
+			                	alreadyDisplayed.add(start);
+			                	icons.add(trayIcon);
+			                }
+			                System.out.printf("%s (%s)\n", event.getSummary(), start);
+			            }
+			        }
+			        try {
+						Thread.sleep(60000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+		        } catch (Exception e){
+				e.printStackTrace();
+		        }
+			
+				}
+			
+			});
+    	
+    	notes.start();
+    	server.start();
     }
 
-    public static void displayTray() throws AWTException{
+    public static TrayIcon displayTray(String desc, String summary) throws AWTException{
         //Obtain only one instance of the SystemTray object
         SystemTray tray = SystemTray.getSystemTray();
         //Creating a tray icon
@@ -161,7 +222,56 @@ public class Controller {
         trayIcon.setImageAutoSize(true);
         //Set tooltip text for the tray icon
         trayIcon.setToolTip("System tray icon demo");
+        
+        trayIcon.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				System.out.println("Nothing");
+			}
+        	
+        });
+        trayIcon.addMouseListener(new MouseAdapter(){
+        	public void mouseClicked(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				System.out.println("Cant5");
+			}
+        });
+        trayIcon.addMouseListener(new MouseListener(){
+        	@Override
+			public void mouseClicked(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				System.out.println("Cant5");
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				System.out.println("Cant3");
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				System.out.println("Cant2");
+			}
+
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				System.out.println("Can1t");
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				System.out.println("Cant");
+			}
+        });
+        
         tray.add(trayIcon);
-        trayIcon.displayMessage("Hello, World", "notification demo", MessageType.INFO);
+        trayIcon.displayMessage(desc,summary, MessageType.INFO);
+        return trayIcon;
     }
 }
