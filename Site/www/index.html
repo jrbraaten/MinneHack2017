@@ -1,0 +1,73 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css">
+    <script src="/bundle.js" ></script>
+	<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+
+	<script type="text/javascript">
+        $(document).ready(function() {
+            setInterval("myajax()",10000);
+        });
+		function myajax () {
+           $.ajax({
+               url: "/request",
+               type: "GET",
+               dataType: "json",
+               cache: false,
+               timeout: 5000,
+               complete: function () {
+                   //called when complete
+
+                   console.log('process complete');
+               },
+
+               success: function (data) {
+                   var color;
+
+                   if (data[1] == "true") {
+                       color = "#00FF00";
+                   } else {
+                       color = "#CC0000";
+                   }
+                   $("#day" + data[0]).css('background-color', color);
+                   console.log('process sucess');
+               },
+
+               error: function () {
+                   console.log('process error');
+               },
+           });
+       }
+	</script>
+
+</head>
+<body>
+
+<div id="nav-holder"style="height:52px;"></div>
+<div id="homePage"style = "height:100%;width:100%;background:#0040C7;">
+	<div id="doctorQuestions" style = "height:80%;width:30%;background:#0040B3; float:right;">
+		<label style="color:white;font-size:20px;">
+			Ask Your Doctor a Question
+		</label>
+		<form>
+			<img src="person.png"style="width:30;height:30;float:left;">
+			<p style="background:white;margin-left:40px;">
+			Testing
+			</p>
+			<br>
+			<br>
+		  	<input type="text" name="questionBox"style="padding:0;width:100%">
+		  	<br>
+		  	<br>
+		  	<input type="submit" style="margin-left:25%;margin-right:25%;width:50%"value="Submit">
+		</form>
+	</div>
+	<div id="calendarLocations" style = "height:80%;width:70%;background: #00409C;"></div>
+</div>
+
+<div id="mount"></div>
+
+
+</body>
+</html>
