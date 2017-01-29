@@ -18,7 +18,7 @@ class Calendar extends React.Component {
             clear: "left"
         };
         this.weekdaystyle = {
-            width: "12%",
+            width: "13%",
             height: "5%",
             border: "solid",
             float: "left",

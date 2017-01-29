@@ -13,8 +13,8 @@ class Day extends React.Component {
             message: props.message,
         };
         this.divstyle = {
-            width: "12%",
-            height: "12%",
+            width: "13%",
+            height: "16%",
             border: "solid",
             float: "left",
             backgroundColor: props.color
@@ -23,20 +23,25 @@ class Day extends React.Component {
             width: "100%",
             borderRadius: "20px",
             textAlign: "center",
-            backgroundColor: props.notificationColor
+            backgroundColor: props.notificationColor,
+            color: "lightgrey"
         }
 
         this.datestyle = {
             width: "100%",
             height:"50%"
         }
+        this.dateDay = {
+                width: "100%",
+                height:"30%"
+            }
 
     };
 
     render(){
         return(
             <div id={this.state.id} style={this.divstyle}>
-                <div style={this.datestyle}>
+                <div style={this.dateDay}>
                     {this.state.day}
                 </div>
                 <div style={this.notificationstyle}>
