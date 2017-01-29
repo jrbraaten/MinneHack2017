@@ -1,0 +1,24 @@
+{
+  "name": "rememberance",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jrbraaten/MinneHack2017.git"
+  },
+  "author": "Nick McDonagh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jrbraaten/MinneHack2017/issues"
+  },
+  "homepage": "https://github.com/jrbraaten/MinneHack2017#readme",
+  "dependencies": {
+    "babel-core": "^6.22.1",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.22.0"
+  }
+}
