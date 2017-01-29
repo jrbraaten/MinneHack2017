@@ -45,25 +45,68 @@
 <body>
 
 <div id="nav-holder"style="height:52px;"></div>
-<div id="homePage"style = "height:100%;width:100%;background:#0040C7;">
+<div id="homePage"style = "height:100%;width:100%;background:#0040B3;">
 	<div id="doctorQuestions" style = "height:80%;width:30%;background:#0040B3; float:right;">
 		<label style="color:white;font-size:20px;">
-			Ask Your Doctor a Question
+			Doctor Notes
 		</label>
 		<form>
-			<img src="person.png"style="width:30;height:30;float:left;">
-			<p style="background:white;margin-left:40px;">
-			Testing
-			</p>
+			<div style="width:100%; border-bottom: 1px solid #aaa;">
+				<p style="text-align:center;color:white;">
+					January 23rd
+				</p>
+				<img src="person.png"style="width:50;height:50;float:left;">
+			
+				<div style="margin-left:60px;background:white;border-radius: 20px;">
+					<p style="margin-left:20px;font-size:14px;" >
+						Barbara should be taking her pills at the same time she eats
+					</p>
+				</div>
+				<br>
+			</div>
+			<br>
+			<div style="width:100%; border-bottom: 1px solid #aaa;">
+				<p style="text-align:center;color:white;">
+					January 25th
+				</p>
+				<img src="person.png"style="width:50;height:50;float:right;">
+				<div style="margin-right:60px;background:white;border-radius: 20px;">
+					<p style="margin-left:20px;font-size:14px;" >
+						Barbara is having some trouble with large pills
+					</p>
+				</div>
+				<br>
+				<img src="person.png"style="width:50;height:50;float:left;">
+				<div style="margin-left:60px;background:white;border-radius: 20px;">
+					<p style="margin-left:20px;font-size:14px;" >
+						If she wants to she can try taking her pills after they have been dissolved in water
+					</p>
+				</div>
+				<br>
+				<img src="person.png"style="width:50;height:50;float:right;">
+				<div style="margin-right:60px;background:white;border-radius: 20px;">
+					<p style="margin-left:20px;font-size:14px;" >
+						Thank you, she now has no problems with taking them 
+					</p>
+				</div>
+				<br>
+			</div>
+			
 			<br>
 			<br>
-		  	<input type="text" name="questionBox"style="padding:0;width:100%">
+		  	<input type="text" name="questionBox"style="padding:0;width:100%;border-radius: 20px;box-shadow: 0 1px 0 #ccc inset;">
 		  	<br>
 		  	<br>
 		  	<input type="submit" style="margin-left:25%;margin-right:25%;width:50%"value="Submit">
 		</form>
 	</div>
-	<div id="calendarLocations" style = "height:80%;width:70%;background: #00409C;"></div>
+	<div style = "height:80%;width:70%;background: #00409C;">
+		<p style="text-align:center;color:white;font-size:32px;">
+		January
+		</p>
+		<div id="calendarLocations" style="margin-left:30px;width:100%"></div>
+	</div>
+	
 </div>
 
 <div id="mount"></div>
