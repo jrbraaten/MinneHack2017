@@ -22,5 +22,5 @@ document.addEventListener('DOMContentLoaded', function() {
     );
 
     ReactDOM.render(navbarInstance, document.getElementById('nav-holder'));
-    //ReactDOM.render(React.createElement(Calendar), document.getElementById('calendar-holder'))
+    ReactDOM.render(React.createElement(Calendar), document.getElementById('calendarLocations'))
 });
