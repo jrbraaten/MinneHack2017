@@ -13,8 +13,8 @@ class Day extends React.Component {
             message: props.message,
         };
         this.divstyle = {
-            width: "14%",
-            height: "14%",
+            width: "12%",
+            height: "12%",
             border: "solid",
             float: "left",
             backgroundColor: props.color
