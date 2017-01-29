@@ -9,23 +9,40 @@ class Day extends React.Component {
         this.state = {
             day: props.day,
             color: props.color,
-            id: "day"+props.day
+            id: "day"+props.day,
+            message: props.message,
         };
         this.divstyle = {
-            width: "13%",
-            height: "13%",
+            width: "12%",
+            height: "12%",
             border: "solid",
             float: "left",
             backgroundColor: props.color
+        }
+        this.notificationstyle = {
+            width: "100%",
+            borderRadius: "20px",
+            textAlign: "center",
+            backgroundColor: props.notificationColor
+        }
+
+        this.datestyle = {
+            width: "100%",
+            height:"50%"
         }
 
     };
 
     render(){
         return(
-        <div id={this.state.id} style={this.divstyle}>
-            {this.state.day}
-        </div>
+            <div id={this.state.id} style={this.divstyle}>
+                <div style={this.datestyle}>
+                    {this.state.day}
+                </div>
+                <div style={this.notificationstyle}>
+                    {this.state.message}
+                </div>
+            </div>
         );
     };
 }
