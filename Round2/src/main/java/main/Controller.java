@@ -13,12 +13,16 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -122,6 +126,7 @@ public class Controller {
         //   com.google.api.services.calendar.model.Calendar class.
 
     	List<TrayIcon> icons = new ArrayList<TrayIcon>();
+    	List<DateTime> alreadyDisplayed = new ArrayList<DateTime>();
     	
     	Thread server = new Thread(new Runnable(){
     		
@@ -140,6 +145,7 @@ public class Controller {
 			        	if(s.getInputStream() != null){
 			        		System.out.println("Closing");
 			        		tray.remove(icons.get(0));
+			        		icons.remove(0);
 			        		s.close();
 			        	}
 					}
@@ -150,7 +156,46 @@ public class Controller {
     		
     	});
     	
-    	
+    	Thread notifier = new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				List<DateTime> alreadySent = new ArrayList<DateTime>();
+				while(true){
+					Calendar myTime = Calendar.getInstance();
+					myTime.setTime(new Date());
+					Calendar theirTime = Calendar.getInstance();
+					
+					
+					for(int i = 0; i < alreadyDisplayed.size(); i++){
+						theirTime.setTimeInMillis(alreadyDisplayed.get(i).getValue());
+						theirTime.add(Calendar.SECOND, 30);
+						if(!alreadySent.contains(alreadyDisplayed.get(i)) && myTime.getTimeInMillis() > theirTime.getTimeInMillis()){
+							alreadySent.add(alreadyDisplayed.get(i));
+							System.out.println("Attempting to send");
+							Socket s;
+							try {
+								s = new Socket("10.104.184.194", 5000);
+							
+							PrintWriter out =
+							        new PrintWriter(s.getOutputStream(), true);
+							
+							out.print("They havent taken their pills yet.");
+							System.out.println("It should have worked!");
+							s.close();
+							} catch (Exception e){
+								e.printStackTrace();
+							}
+						}
+					}
+					
+					
+					
+				}
+			}
+    		
+    	});
     	
     	
     	Thread notes = new Thread(new Runnable(){
@@ -158,7 +203,7 @@ public class Controller {
 			@Override
 			public void run() {
 				try{
-				List<DateTime> alreadyDisplayed = new ArrayList<DateTime>();
+				
 				
 				while(true){
 					com.google.api.services.calendar.Calendar service =
@@ -180,13 +225,18 @@ public class Controller {
 			            System.out.println("Upcoming events");
 			            for (Event event : items) {
 			                DateTime start = event.getStart().getDateTime();
+			                
 			                if (start == null) {
 			                    start = event.getStart().getDate();
 			                }
-			                if(!alreadyDisplayed.contains(start)){			            
-			                	TrayIcon trayIcon = displayTray(event.getDescription(), event.getSummary());
-			                	alreadyDisplayed.add(start);
-			                	icons.add(trayIcon);
+			                long lS = start.getValue();
+			                long cur = new Date().getTime();
+			                if(!alreadyDisplayed.contains(start)){	
+			                	if(lS < cur){
+				                	TrayIcon trayIcon = displayTray(event.getDescription(), event.getSummary());
+				                	alreadyDisplayed.add(start);
+				                	icons.add(trayIcon);
+			                	}
 			                }
 			                System.out.printf("%s (%s)\n", event.getSummary(), start);
 			            }
@@ -208,6 +258,7 @@ public class Controller {
     	
     	notes.start();
     	server.start();
+    	notifier.start();
     }
 
     public static TrayIcon displayTray(String desc, String summary) throws AWTException{
