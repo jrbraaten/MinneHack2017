@@ -2,7 +2,6 @@ var express = require('express');
 var webpackDevMiddleware = require('webpack-dev-middleware');
 var webpack = require('webpack');
 var webpackConfig = require('./webpack.config.js');
-var stormpath = require('express-stormpath')
 var app = express();
 
 var compiler = webpack(webpackConfig);
@@ -18,6 +17,11 @@ app.use(webpackDevMiddleware(compiler, {
     },
     historyApiFallback: true,
 }));
+
+app.all('/secret', function(req, res) {
+
+    res.send("request made \n");
+})
 
 var server = app.listen(3000, function() {
     var host = server.address().address;
